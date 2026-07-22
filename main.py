@@ -223,6 +223,11 @@ def generate_html(news_dict):
             evt.currentTarget.className += " active";
         }
     </script>
+    <script src="https://ads-partners.coupang.com/g.js"></script>
+    <script>
+    new PartnersCoupang.G({"id":1009386,"template":"carousel","trackingCode":"AF8714635","width":"680","height":"140","tsource":""});
+    </script> 
+    "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
 </body>
 </html>
 """
