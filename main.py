@@ -92,81 +92,97 @@ def generate_html(news_dict):
     <meta http-equiv="refresh" content="60">
     <title>Daily Naver News Briefing</title>
     <style>
-        :root {{
+        :root {
             --primary-color: #03c75a;
             --bg-color: #f5f6f7;
             --card-bg: #ffffff;
             --text-color: #202020;
             --border-color: #e4e8eb;
-        }}
-        body {{
+        }
+        body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
             padding: 20px;
-        }}
-        .container {{
+        }
+        .container {
             max-width: 800px;
             margin: 0 auto;
             background: var(--card-bg);
             padding: 25px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }}
-        header {{
+        }
+        header {
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 15px;
             margin-bottom: 20px;
-        }}
-        h1 {{
+        }
+        h1 {
             margin: 0 0 8px 0;
             font-size: 24px;
             color: var(--primary-color);
-        }}
-        .last-update {{
+        }
+        .last-update {
             font-size: 13px;
             color: #888;
-        }}
-        /* 탭 스타일 */
-        .tab-container {{
+        }
+
+        /* 📱 가로 스크롤 지원 탭 스타일 수정 영역 */
+        .tab-container {
             display: flex;
             gap: 8px;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 20px;
-        }}
-        .tab-btn {{
-            padding: 10px 20px;
+            overflow-x: auto;            /* 탭이 영역을 넘어가면 가로 스크롤 생성 */
+            white-space: nowrap;         /* 탭 버튼 줄바꿈 방지 */
+            -webkit-overflow-scrolling: touch; /* 모바일 부드러운 스크롤 */
+            scrollbar-width: thin;       /* 파이어폭스 스크롤바 얇게 */
+        }
+        /* 스크롤바 감추기 원할 경우 사용 (선택 사항) */
+        .tab-container::-webkit-scrollbar {
+            height: 4px;                /* 가로 스크롤바 두께 */
+        }
+        .tab-container::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+        .tab-btn {
+            padding: 10px 16px;
             border: none;
             background: none;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: #666;
             cursor: pointer;
             border-bottom: 3px solid transparent;
             transition: all 0.2s ease;
-        }}
-        .tab-btn:hover {{
+            flex-shrink: 0;             /* 탭 버튼 폭이 줄어들지 않고 유지되도록 설정 */
+            white-space: nowrap;        /* 버튼 안의 글자 줄바꿈 강제 방지 */
+        }
+        .tab-btn:hover {
             color: var(--primary-color);
-        }}
-        .tab-btn.active {{
+        }
+        .tab-btn.active {
             color: var(--primary-color);
             border-bottom: 3px solid var(--primary-color);
-        }}
+        }
+
         /* 뉴스 목록 스타일 */
-        .news-list {{
+        .news-list {
             list-style: none;
             padding: 0;
             margin: 0;
-        }}
-        .news-item {{
+        }
+        .news-item {
             padding: 16px 0;
             border-bottom: 1px solid var(--border-color);
-        }}
-        .news-item:last-child {{
+        }
+        .news-item:last-child {
             border-bottom: none;
-        }}
-        .news-title {{
+        }
+        .news-title {
             font-size: 17px;
             font-weight: 600;
             color: #1e1e1e;
@@ -174,26 +190,26 @@ def generate_html(news_dict):
             display: block;
             margin-bottom: 6px;
             line-height: 1.4;
-        }}
-        .news-title:hover {{
+        }
+        .news-title:hover {
             color: var(--primary-color);
             text-decoration: underline;
-        }}
-        .news-desc {{
+        }
+        .news-desc {
             font-size: 14px;
             color: #555;
             margin: 0 0 8px 0;
             line-height: 1.5;
-        }}
-        .news-date {{
+        }
+        .news-date {
             font-size: 12px;
             color: #999;
-        }}
-        .empty-msg {{
+        }
+        .empty-msg {
             padding: 30px 0;
             text-align: center;
             color: #999;
-        }}
+        }
     </style>
 </head>
 <body>
