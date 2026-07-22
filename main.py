@@ -1,7 +1,7 @@
 import os
 import html
 import requests
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 # 네이버 API 인증 정보
 CLIENT_ID = os.environ.get("NAVER_CLIENT_ID")
@@ -36,7 +36,9 @@ def fetch_news(keyword):
         return []
 
 def generate_html(news_dict):
-    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # 한국 표준시(KST = UTC + 9시간) 계산
+    kst = timezone(timedelta(hours=9))
+    now_str = datetime.now(kst).strftime("%Y-%m-%d %H:%M:%S")
     
     tab_buttons = ""
     tab_contents = ""
@@ -67,7 +69,7 @@ def generate_html(news_dict):
         tab_contents += '  <ul class="news-list">' + news_items + '</ul>'
         tab_contents += '</div>\n'
 
-    # 기존 방식처럼 일반 멀티라인 문자열(""" """) 사용 (CSS 중괄호 변환 필요 없음)
+    # 일반 멀티라인 문자열(""" """) 사용
     html_template = """<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -195,7 +197,7 @@ def generate_html(news_dict):
     <div class="container">
         <header>
             <h1>📰 뉴스 브리핑</h1>
-            <div class="last-update">최종 업데이트: __NOW_STR__ (1분마다 자동 새로고침)</div>
+            <div class="last-update">최종 업데이트: __NOW_STR__ (KST) (1분마다 자동 새로고침)</div>
         </header>
 
         <div class="tab-container">
@@ -225,7 +227,6 @@ def generate_html(news_dict):
 </html>
 """
 
-    # 치환(replace) 키워드를 사용해 데이터 집어넣기
     html_content = html_template.replace("__NOW_STR__", now_str)
     html_content = html_content.replace("__TAB_BUTTONS__", tab_buttons)
     html_content = html_content.replace("__TAB_CONTENTS__", tab_contents)
