@@ -89,7 +89,7 @@ def generate_html(news_dict):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="60">
+    
     <title>Daily Naver News Briefing</title>
     <style>
         :root {
@@ -231,7 +231,7 @@ def generate_html(news_dict):
     <div class="container">
         <header>
             <h1>📰 뉴스 브리핑</h1>
-            <div class="last-update">최종 업데이트: __NOW_STR__ (KST) (1분마다 자동 새로고침)</div>
+            <div class="last-update">최종 업데이트: __NOW_STR__ (KST) </div>
         </header>
 
         <div class="tab-container">
