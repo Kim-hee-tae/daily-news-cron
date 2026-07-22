@@ -43,6 +43,17 @@ def generate_html(news_dict):
     tab_buttons = ""
     tab_contents = ""
     
+    # 쿠팡 배너 HTML 템플릿 (목록 중간 및 공정위 문구 포함)
+    coupang_banner_html = """
+    <li class="news-item coupang-banner-item">
+        <script src="https://ads-partners.coupang.com/g.js"></script>
+        <script>
+            new PartnersCoupang.G({"id":1009386,"template":"carousel","trackingCode":"AF8714635","width":"680","height":"140","tsource":""});
+        </script>
+        
+    </li>
+    """
+    
     for idx, key in enumerate(KEYWORDS):
         active_class = "active" if idx == 0 else ""
         display_style = "block" if idx == 0 else "none"
@@ -55,13 +66,17 @@ def generate_html(news_dict):
         news_items = ""
         
         if items:
-            for item in items:
+            for item_idx, item in enumerate(items):
                 pub_date = item.get('pubDate', '')[:25]
                 news_items += '<li class="news-item">'
                 news_items += '  <a href="' + item['link'] + '" target="_blank" rel="noopener noreferrer" class="news-title">' + item['title'] + '</a>'
                 news_items += '  <p class="news-desc">' + item['description'] + '</p>'
                 news_items += '  <span class="news-date">' + pub_date + '</span>'
                 news_items += '</li>\n'
+                
+                # 5번째 뉴스(인덱스 4) 바로 뒤에 쿠팡 배너 삽입
+                if item_idx == 4:
+                    news_items += coupang_banner_html
         else:
             news_items = '<li class="empty-msg">수집된 뉴스가 없습니다.</li>'
             
@@ -69,7 +84,6 @@ def generate_html(news_dict):
         tab_contents += '  <ul class="news-list">' + news_items + '</ul>'
         tab_contents += '</div>\n'
 
-    # 일반 멀티라인 문자열(""" """) 사용
     html_template = """<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -103,7 +117,7 @@ def generate_html(news_dict):
         header {
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         h1 {
             margin: 0 0 8px 0;
@@ -114,11 +128,17 @@ def generate_html(news_dict):
             font-size: 13px;
             color: #888;
         }
+        /* [수정] 탭 메뉴를 상단에 고정 (Sticky) */
         .tab-container {
+            position: sticky;
+            top: 0;
+            background-color: var(--card-bg);
+            z-index: 100;
             display: flex;
             gap: 8px;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 20px;
+            padding-top: 5px;
+            margin-bottom: 10px;
             overflow-x: auto;
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
@@ -132,7 +152,7 @@ def generate_html(news_dict):
             border-radius: 4px;
         }
         .tab-btn {
-            padding: 10px 16px;
+            padding: 12px 16px;
             border: none;
             background: none;
             font-size: 15px;
@@ -186,6 +206,20 @@ def generate_html(news_dict):
             font-size: 12px;
             color: #999;
         }
+        /* [추가] 쿠팡 배너 아이템 스타일링 */
+        .coupang-banner-item {
+            text-align: center;
+            background-color: #f9f9f9;
+            padding: 15px 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .coupang-notice {
+            font-size: 11px;
+            color: #888888;
+            margin: 6px 0 0 0;
+        }
         .empty-msg {
             padding: 30px 0;
             text-align: center;
@@ -223,11 +257,6 @@ def generate_html(news_dict):
             evt.currentTarget.className += " active";
         }
     </script>
-    <script src="https://ads-partners.coupang.com/g.js"></script>
-    <script>
-    new PartnersCoupang.G({"id":1009386,"template":"carousel","trackingCode":"AF8714635","width":"680","height":"140","tsource":""});
-    </script> 
-    "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
 </body>
 </html>
 """
