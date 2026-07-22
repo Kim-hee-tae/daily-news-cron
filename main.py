@@ -75,6 +75,7 @@ def generate_html(articles, keyword):
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="60">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>네이버 뉴스 브리핑 - {keyword}</title>
     <style>
