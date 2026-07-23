@@ -16,7 +16,7 @@ def fetch_news(keyword):
         print("⚠️ 네이버 API Key가 설정되지 않았습니다.")
         return []
         
-    url = "https://openapi.naver.com/v1/search/news.json?query=" + keyword + "&display=10&sort=date"
+    url = "https://openapi.naver.com/v1/search/news.json?query=" + keyword + "&display=15&sort=date"
     headers = {
         "X-Naver-Client-Id": CLIENT_ID,
         "X-Naver-Client-Secret": CLIENT_SECRET
