@@ -8,7 +8,7 @@ CLIENT_ID = os.environ.get("NAVER_CLIENT_ID")
 CLIENT_SECRET = os.environ.get("NAVER_CLIENT_SECRET")
 
 # 수집할 키워드 목록
-KEYWORDS = ["엔터","스포츠","게임","경제","부동산", "인공지능", "반도체", "정치"]
+KEYWORDS = ["미국주식","엔터","스포츠","게임","경제","부동산", "인공지능", "반도체", "정치"]
 
 def fetch_news(keyword):
     """네이버 뉴스 API 수집"""
