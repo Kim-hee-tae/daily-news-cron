@@ -230,7 +230,7 @@ def generate_html(news_dict):
 <body>
     <div class="container">
         <header>
-            <h1>📰 뉴스 브리핑</h1>
+            <h1>📰 뉴스 브리핑 [출처:네이버 api]</h1>
             <div class="last-update">최종 업데이트: __NOW_STR__ (KST) </div>
         </header>
 
