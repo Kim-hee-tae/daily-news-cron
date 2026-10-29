@@ -1,7 +1,10 @@
 import os
 import html
+import json
 import requests
 from datetime import datetime, timezone, timedelta
+from email.utils import parsedate_to_datetime
+from urllib.parse import urlparse
 
 # 네이버 API 인증 정보
 CLIENT_ID = os.environ.get("NAVER_CLIENT_ID")
@@ -267,6 +270,34 @@ def generate_html(news_dict):
 
     return html_content
 
+def generate_json(news_dict):
+    """yplue.com 등 다른 사이트에서 읽어 갈 수 있는 news.json 데이터"""
+    kst = timezone(timedelta(hours=9))
+    categories = []
+    for key in KEYWORDS:
+        items = []
+        for item in news_dict.get(key, []):
+            try:
+                published = parsedate_to_datetime(item.get('pubDate', '')).astimezone(kst).isoformat()
+            except Exception:
+                published = None
+            origin = item.get('originallink') or item.get('link', '')
+            source = urlparse(origin).netloc.replace('www.', '')
+            items.append({
+                "title": item.get('title', ''),
+                "description": item.get('description', ''),
+                "link": item.get('link', ''),
+                "originallink": item.get('originallink', ''),
+                "source": source,
+                "published": published,
+            })
+        categories.append({"keyword": key, "items": items})
+    return {
+        "updated": datetime.now(kst).isoformat(timespec="seconds"),
+        "source": "네이버 뉴스 검색 API",
+        "categories": categories,
+    }
+
 def main():
     news_data = {}
     print("🚀 뉴스 데이터 수집을 시작합니다...")
@@ -282,6 +313,11 @@ def main():
         f.write(html_content)
         
     print("✅ 성공적으로 index.html이 작성되었습니다!")
+
+    with open("news.json", "w", encoding="utf-8") as f:
+        json.dump(generate_json(news_data), f, ensure_ascii=False)
+
+    print("✅ news.json 작성 완료 (yplue.com 뉴스 섹션용)")
 
 if __name__ == "__main__":
     main()
